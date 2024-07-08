@@ -71,7 +71,7 @@ public class AuthorRest {
 
         RestResponse.object<DTO.respAuthor> build = RestResponse.object.<DTO.respAuthor>builder()
                 .status_code(Constants.CREATED)
-                .message(Constants.ITEM_EXIST_MESSAGE)
+                .message(Constants.CREATE_MESSAGE)
                 .data(respAuthor)
                 .build();
 
@@ -92,8 +92,26 @@ public class AuthorRest {
 
         return RestResponse.object.<DTO.respAuthor>builder()
                 .status_code(Constants.OK)
-                .message(Constants.ITEM_EXIST_MESSAGE)
+                .message(Constants.UPDATE_MESSAGE)
                 .data(respAuthor)
+                .build();
+
+    }
+
+    @DeleteMapping(
+            path = "{id}/remove",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public RestResponse.object<String> remove(@PathVariable("id") Long id,
+                                              DTO.reqstDetailAuthor request) {
+
+        request.setId(id);
+        services.remove(request);
+
+        return RestResponse.object.<String>builder()
+                .data("")
+                .status_code(Constants.OK)
+                .message(Constants.DELETE_MESSAGE)
                 .build();
 
     }

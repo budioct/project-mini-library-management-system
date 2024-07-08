@@ -74,4 +74,14 @@ public class AuthorServiceImpl implements AuthorService {
         return DTO.toRespAuthor(author);
     }
 
+    @Transactional
+    public void remove(DTO.reqstDetailAuthor request) {
+        validation.validate(request);
+
+        AuthorEntity author = repository.findFirstById(request.getId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Author not found"));
+
+        repository.delete(author);
+    }
+
 }

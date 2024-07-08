@@ -14,4 +14,6 @@ public interface AuthorService {
 
     DTO.respAuthor update(DTO.reqstUpdateAuthor request);
 
+    void remove(DTO.reqstDetailAuthor request);
+
 }
