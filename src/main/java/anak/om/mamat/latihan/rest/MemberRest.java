@@ -6,7 +6,9 @@ import anak.om.mamat.latihan.rest.handler.RestResponse;
 import anak.om.mamat.latihan.utilities.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -68,15 +70,17 @@ public class MemberRest {
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    public RestResponse.object<DTO.respMember> create(@RequestBody DTO.reqstMember request) {
+    public ResponseEntity<RestResponse.object<DTO.respMember>> create(@RequestBody DTO.reqstMember request) {
 
         DTO.respMember respMember = services.create(request);
 
-        return RestResponse.object.<DTO.respMember>builder()
+        RestResponse.object<DTO.respMember> build = RestResponse.object.<DTO.respMember>builder()
                 .data(respMember)
                 .status_code(Constants.CREATED)
                 .message(Constants.CREATE_MESSAGE)
                 .build();
+
+        return new ResponseEntity<>(build, HttpStatus.CREATED);
 
     }
 
