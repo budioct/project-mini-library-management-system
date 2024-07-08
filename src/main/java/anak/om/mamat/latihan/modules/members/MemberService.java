@@ -12,4 +12,6 @@ public interface MemberService {
 
     DTO.respMember update(DTO.reqstUpdateMember request);
 
+    DTO.respMember detail(DTO.reqstDetailMember request);
+
 }

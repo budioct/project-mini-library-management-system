@@ -4,11 +4,13 @@ import anak.om.mamat.latihan.modules.members.DTO;
 import anak.om.mamat.latihan.modules.members.MemberService;
 import anak.om.mamat.latihan.rest.handler.RestResponse;
 import anak.om.mamat.latihan.utilities.Constants;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,6 +18,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/member")
+@Validated
 public class MemberRest {
 
     @Autowired
@@ -90,7 +93,7 @@ public class MemberRest {
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
     public RestResponse.object<DTO.respMember> update(@RequestBody DTO.reqstUpdateMember reqeust,
-                                                      @PathVariable Long id){
+                                                      @PathVariable Long id) {
 
         reqeust.setId(id);
         DTO.respMember respMember = services.update(reqeust);
@@ -99,6 +102,24 @@ public class MemberRest {
                 .data(respMember)
                 .status_code(Constants.OK)
                 .message(Constants.UPDATE_MESSAGE)
+                .build();
+
+    }
+
+    @GetMapping(
+            path = "/{id}/detail",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public RestResponse.object<DTO.respMember> detail(@PathVariable("id") Long id,
+                                                      DTO.reqstDetailMember reqeust) {
+
+        reqeust.setId(id);
+        DTO.respMember respMember = services.detail(reqeust);
+
+        return RestResponse.object.<DTO.respMember>builder()
+                .data(respMember)
+                .status_code(Constants.OK)
+                .message(Constants.ITEM_EXIST_MESSAGE)
                 .build();
 
     }

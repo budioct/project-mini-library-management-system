@@ -84,4 +84,15 @@ public class MemberServiceImpl implements MemberService {
         return DTO.toRespMember(save);
     }
 
+    @Transactional(readOnly = true)
+    public DTO.respMember detail(DTO.reqstDetailMember request) {
+        validation.validate(request);
+
+        MemberEntity member = repository.findFirstById(request.getId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "member not found"));
+
+        return DTO.toRespMember(member);
+    }
+
+
 }

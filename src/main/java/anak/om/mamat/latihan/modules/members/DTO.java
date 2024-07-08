@@ -28,6 +28,16 @@ public class DTO {
     @AllArgsConstructor
     @NoArgsConstructor
     @Builder
+    public static class reqstDetailMember {
+        @NotNull
+        private Long id;
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
     public static class reqstMember {
         @NotBlank
         @NotNull
