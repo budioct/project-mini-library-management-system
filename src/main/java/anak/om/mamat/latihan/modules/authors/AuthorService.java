@@ -8,4 +8,6 @@ public interface AuthorService {
 
     Page<DTO.respAuthor> fetchAuthors(Map<String, Object> filter);
 
+    DTO.respAuthor detail(DTO.reqstDetailAuthor request);
+
 }

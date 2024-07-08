@@ -7,10 +7,7 @@ import anak.om.mamat.latihan.utilities.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -40,6 +37,23 @@ public class AuthorRest {
                         .totalPage(respAuthors.getTotalPages())
                         .sizePage(respAuthors.getSize())
                         .build())
+                .build();
+
+    }
+
+    @GetMapping(
+            path = "{id}/detail",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public RestResponse.object<DTO.respAuthor> detail(@PathVariable("id") Long id,
+                                                      DTO.reqstDetailAuthor request) {
+        request.setId(id);
+        DTO.respAuthor respAuthor = services.detail(request);
+
+        return RestResponse.object.<DTO.respAuthor>builder()
+                .status_code(Constants.OK)
+                .message(Constants.ITEM_EXIST_MESSAGE)
+                .data(respAuthor)
                 .build();
 
     }
