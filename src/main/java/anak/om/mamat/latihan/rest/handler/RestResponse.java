@@ -12,12 +12,12 @@ public class RestResponse {
     @Data
     @Builder
     public static class list<T>{
-        private T data;
         private Integer status_code;
         private String message;
-        private String errors;
         private Integer count_data;
+        private T data;
         private restPagingResponse paging;
+        //private String errors;
     }
 
     @Getter
