@@ -4,13 +4,11 @@ import anak.om.mamat.latihan.modules.members.DTO;
 import anak.om.mamat.latihan.modules.members.MemberService;
 import anak.om.mamat.latihan.rest.handler.RestResponse;
 import anak.om.mamat.latihan.utilities.Constants;
-import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,7 +16,6 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/member")
-@Validated
 public class MemberRest {
 
     @Autowired
@@ -92,11 +89,11 @@ public class MemberRest {
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    public RestResponse.object<DTO.respMember> update(@RequestBody DTO.reqstUpdateMember reqeust,
+    public RestResponse.object<DTO.respMember> update(@RequestBody DTO.reqstUpdateMember request,
                                                       @PathVariable Long id) {
 
-        reqeust.setId(id);
-        DTO.respMember respMember = services.update(reqeust);
+        request.setId(id);
+        DTO.respMember respMember = services.update(request);
 
         return RestResponse.object.<DTO.respMember>builder()
                 .data(respMember)
@@ -111,10 +108,10 @@ public class MemberRest {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public RestResponse.object<DTO.respMember> detail(@PathVariable("id") Long id,
-                                                      DTO.reqstDetailMember reqeust) {
+                                                      DTO.reqstDetailMember request) {
 
-        reqeust.setId(id);
-        DTO.respMember respMember = services.detail(reqeust);
+        request.setId(id);
+        DTO.respMember respMember = services.detail(request);
 
         return RestResponse.object.<DTO.respMember>builder()
                 .data(respMember)
@@ -124,5 +121,22 @@ public class MemberRest {
 
     }
 
+    @DeleteMapping(
+            path = "{id}/remove",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public RestResponse.object<String> remove(@PathVariable("id") Long id,
+                                              DTO.reqstDetailMember request) {
+
+        request.setId(id);
+        services.remove(request);
+
+        return RestResponse.object.<String>builder()
+                .data("")
+                .status_code(Constants.OK)
+                .message(Constants.DELETE_MESSAGE)
+                .build();
+
+    }
 
 }

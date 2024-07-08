@@ -14,4 +14,6 @@ public interface MemberService {
 
     DTO.respMember detail(DTO.reqstDetailMember request);
 
+    void remove(DTO.reqstDetailMember request);
+
 }

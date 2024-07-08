@@ -94,5 +94,16 @@ public class MemberServiceImpl implements MemberService {
         return DTO.toRespMember(member);
     }
 
+    @Transactional
+    public void remove(DTO.reqstDetailMember request) {
+        validation.validate(request);
+
+        MemberEntity member = repository.findFirstById(request.getId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "member not found"));
+
+        //repository.deleteById(member.getId()); // hapus berdasarkan id
+        repository.delete(member); // hapus berdasarkan instance
+    }
+
 
 }
