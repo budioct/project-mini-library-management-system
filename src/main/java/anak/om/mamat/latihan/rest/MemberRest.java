@@ -84,5 +84,24 @@ public class MemberRest {
 
     }
 
+    @PutMapping(
+            path = "/{id}/update",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE
+    )
+    public RestResponse.object<DTO.respMember> update(@RequestBody DTO.reqstUpdateMember reqeust,
+                                                      @PathVariable Long id){
+
+        reqeust.setId(id);
+        DTO.respMember respMember = services.update(reqeust);
+
+        return RestResponse.object.<DTO.respMember>builder()
+                .data(respMember)
+                .status_code(Constants.OK)
+                .message(Constants.UPDATE_MESSAGE)
+                .build();
+
+    }
+
 
 }

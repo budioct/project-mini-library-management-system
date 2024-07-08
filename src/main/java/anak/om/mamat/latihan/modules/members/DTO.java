@@ -29,7 +29,6 @@ public class DTO {
     @NoArgsConstructor
     @Builder
     public static class reqstMember {
-
         @NotBlank
         @NotNull
         private String name;
@@ -38,6 +37,23 @@ public class DTO {
         private String address;
         @NotBlank
         @NotNull
+        @Size(min = 9, max = 12)
+        private String phone;
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
+    public static class reqstUpdateMember {
+        @NotNull
+        private Long id;
+        @NotBlank
+        private String name;
+        @NotBlank
+        private String address;
+        @NotBlank
         @Size(min = 9, max = 12)
         private String phone;
     }

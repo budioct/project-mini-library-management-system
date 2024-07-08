@@ -10,4 +10,6 @@ public interface MemberService {
 
     DTO.respMember create(DTO.reqstMember request);
 
+    DTO.respMember update(DTO.reqstUpdateMember request);
+
 }
