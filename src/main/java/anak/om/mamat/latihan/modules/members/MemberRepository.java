@@ -9,4 +9,6 @@ public interface MemberRepository extends JpaRepository<MemberEntity, Long>, Jpa
 
     Optional<MemberEntity> findFirstById(Long id);
 
+    Optional<MemberEntity> findFirstByphone(String phone);
+
 }

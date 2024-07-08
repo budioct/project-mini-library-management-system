@@ -1,5 +1,8 @@
 package anak.om.mamat.latihan.modules.members;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -19,6 +22,26 @@ public class DTO {
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
     }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
+    public static class reqstMember {
+
+        @NotBlank
+        @NotNull
+        private String name;
+        @NotBlank
+        @NotNull
+        private String address;
+        @NotBlank
+        @NotNull
+        @Size(min = 9, max = 12)
+        private String phone;
+    }
+
 
     public static respMember toRespMember(MemberEntity entity) {
         return respMember.builder()

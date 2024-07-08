@@ -36,4 +36,28 @@ public class MemberServiceImpl implements MemberService {
 
         return new PageImpl<>(respMembers, membersPage.getPageable(), membersPage.getTotalElements());
     }
+
+    @Transactional
+    public DTO.respMember create(DTO.reqstMember request) {
+        validation.validate(request);
+
+        if (repository.findFirstByphone(request.getPhone()).isPresent()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Phone number already in use");
+        }
+
+        MemberEntity member = new MemberEntity();
+        member.setName(request.getName());
+        member.setPhone(request.getPhone());
+        member.setAddress(request.getAddress());
+
+        MemberEntity save = repository.save(member);
+
+        if (save.getId() == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "member do not save");
+        }
+
+        return DTO.toRespMember(save);
+
+    }
+
 }

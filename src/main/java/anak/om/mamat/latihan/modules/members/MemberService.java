@@ -8,4 +8,6 @@ public interface MemberService {
 
     Page<DTO.respMember> fetchMembers(Map<String, Object> filter);
 
+    DTO.respMember create(DTO.reqstMember request);
+
 }

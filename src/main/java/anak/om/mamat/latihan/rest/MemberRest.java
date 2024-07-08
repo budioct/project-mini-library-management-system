@@ -63,5 +63,22 @@ public class MemberRest {
 
     }
 
+    @PostMapping(
+            path = "/create",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE
+    )
+    public RestResponse.object<DTO.respMember> create(@RequestBody DTO.reqstMember request) {
+
+        DTO.respMember respMember = services.create(request);
+
+        return RestResponse.object.<DTO.respMember>builder()
+                .data(respMember)
+                .status_code(Constants.CREATED)
+                .message(Constants.CREATE_MESSAGE)
+                .build();
+
+    }
+
 
 }
