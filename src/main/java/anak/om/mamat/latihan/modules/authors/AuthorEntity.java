@@ -1,4 +1,4 @@
-package anak.om.mamat.latihan.modules.members;
+package anak.om.mamat.latihan.modules.authors;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -15,22 +15,19 @@ import java.time.LocalDateTime;
 @Builder
 @EntityListeners(AuditingEntityListener.class)
 @Entity
-@Table(name = "members")
-public class MemberEntity {
+@Table(name = "authors")
+public class AuthorEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "name", nullable = false, length = 150)
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "address", nullable = false)
-    private String address;
-
-    @Column(name = "phone", nullable = false, length = 12, unique = true)
-    private String phone;
+    @Column(name = "biography")
+    private String biography;
 
     @CreatedDate
     @Column(name = "created_at", updatable = false)
