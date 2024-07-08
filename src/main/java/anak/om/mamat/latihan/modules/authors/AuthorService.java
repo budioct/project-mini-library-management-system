@@ -12,4 +12,6 @@ public interface AuthorService {
 
     DTO.respAuthor create(DTO.reqstCreateAuthor request);
 
+    DTO.respAuthor update(DTO.reqstUpdateAuthor request);
+
 }

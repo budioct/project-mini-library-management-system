@@ -39,6 +39,19 @@ public class DTO {
         private String biography;
     }
 
+    @Getter
+    @Setter
+    @Builder
+    public static class reqstUpdateAuthor {
+        @NotNull
+        private Long id;
+        @NotBlank
+        @Size(min = 2, max = 100)
+        private String name;
+        @NotBlank
+        private String biography;
+    }
+
     public static respAuthor toRespAuthor(AuthorEntity entity) {
         return respAuthor.builder()
                 .id(entity.getId())

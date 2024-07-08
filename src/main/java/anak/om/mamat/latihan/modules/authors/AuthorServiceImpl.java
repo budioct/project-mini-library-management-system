@@ -59,4 +59,19 @@ public class AuthorServiceImpl implements AuthorService {
         return DTO.toRespAuthor(author);
     }
 
+    @Transactional
+    public DTO.respAuthor update(DTO.reqstUpdateAuthor request) {
+        validation.validate(request);
+
+        AuthorEntity author = repository.findFirstById(request.getId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Author not found"));
+
+        author.setName(request.getName());
+        author.setBiography(request.getBiography());
+
+        repository.save(author);
+
+        return DTO.toRespAuthor(author);
+    }
+
 }

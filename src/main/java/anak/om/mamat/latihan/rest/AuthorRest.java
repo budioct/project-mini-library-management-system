@@ -79,4 +79,23 @@ public class AuthorRest {
 
     }
 
+    @PutMapping(
+            path = "{id}/update",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE
+    )
+    public RestResponse.object<DTO.respAuthor> update(@RequestBody DTO.reqstUpdateAuthor request,
+                                                      @PathVariable("id") Long id) {
+
+        request.setId(id);
+        DTO.respAuthor respAuthor = services.update(request);
+
+        return RestResponse.object.<DTO.respAuthor>builder()
+                .status_code(Constants.OK)
+                .message(Constants.ITEM_EXIST_MESSAGE)
+                .data(respAuthor)
+                .build();
+
+    }
+
 }
