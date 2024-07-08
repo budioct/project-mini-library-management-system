@@ -46,4 +46,17 @@ public class AuthorServiceImpl implements AuthorService {
         return DTO.toRespAuthor(author);
     }
 
+    @Transactional
+    public DTO.respAuthor create(DTO.reqstCreateAuthor request) {
+        validation.validate(request);
+
+        AuthorEntity author = new AuthorEntity();
+        author.setName(request.getName());
+        author.setBiography(request.getBiography());
+
+        repository.save(author);
+
+        return DTO.toRespAuthor(author);
+    }
+
 }

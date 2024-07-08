@@ -1,6 +1,8 @@
 package anak.om.mamat.latihan.modules.authors;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -24,6 +26,17 @@ public class DTO {
     public static class reqstDetailAuthor {
         @NotNull
         private Long id;
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    public static class reqstCreateAuthor {
+        @NotBlank
+        @Size(min = 2, max = 100)
+        private String name;
+        @NotBlank
+        private String biography;
     }
 
     public static respAuthor toRespAuthor(AuthorEntity entity) {

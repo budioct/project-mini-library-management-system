@@ -6,7 +6,9 @@ import anak.om.mamat.latihan.rest.handler.RestResponse;
 import anak.om.mamat.latihan.utilities.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -55,6 +57,25 @@ public class AuthorRest {
                 .message(Constants.ITEM_EXIST_MESSAGE)
                 .data(respAuthor)
                 .build();
+
+    }
+
+    @PostMapping(
+            path = "/create",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<RestResponse.object<DTO.respAuthor>> create(@RequestBody DTO.reqstCreateAuthor request) {
+
+        DTO.respAuthor respAuthor = services.create(request);
+
+        RestResponse.object<DTO.respAuthor> build = RestResponse.object.<DTO.respAuthor>builder()
+                .status_code(Constants.CREATED)
+                .message(Constants.ITEM_EXIST_MESSAGE)
+                .data(respAuthor)
+                .build();
+
+        return new ResponseEntity<>(build, HttpStatus.CREATED);
 
     }
 
