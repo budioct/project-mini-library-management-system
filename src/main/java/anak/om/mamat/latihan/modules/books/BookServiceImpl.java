@@ -77,4 +77,26 @@ public class BookServiceImpl implements BookService {
         return DTO.toRespBook(book);
     }
 
+    @Transactional
+    public DTO.respBook update(DTO.reqstUpdateBook request) {
+        validation.validate(request);
+
+        BookEntity book = bookRepository.findFirstById(request.getId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found"));
+
+        AuthorEntity author = authorRepository.findFirstById(request.getAuthor_id())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Author not found"));
+
+        GenreEntity genre = genreRepository.findFirstById(request.getGenre_id())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Genre not found"));
+
+        book.setTitle(request.getTitle());
+        book.setAuthor(author);
+        book.setGenre(genre);
+
+        bookRepository.save(book);
+
+        return DTO.toRespBook(book);
+    }
+
 }

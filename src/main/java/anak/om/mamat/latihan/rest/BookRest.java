@@ -48,7 +48,7 @@ public class BookRest {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public RestResponse.object<DTO.respDetailBook> getDetail(@PathVariable("id") Long id,
-                                                       DTO.reqstDetailBook request) {
+                                                             DTO.reqstDetailBook request) {
 
         request.setId(id);
         DTO.respDetailBook respDetailBook = services.getDetail(request);
@@ -76,6 +76,25 @@ public class BookRest {
                 .build();
 
         return new ResponseEntity<>(build, HttpStatus.CREATED);
+
+    }
+
+    @PutMapping(
+            path = "/{id}/update",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE
+    )
+    public RestResponse.object<DTO.respBook> create(@PathVariable("id") Long id,
+                                                    @RequestBody DTO.reqstUpdateBook request) {
+
+        request.setId(id);
+        DTO.respBook respBook = services.update(request);
+
+        return RestResponse.object.<DTO.respBook>builder()
+                .status_code(Constants.OK)
+                .message(Constants.UPDATE_MESSAGE)
+                .data(respBook)
+                .build();
 
     }
 

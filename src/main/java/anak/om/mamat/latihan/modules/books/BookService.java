@@ -12,4 +12,6 @@ public interface BookService {
 
     DTO.respBook create(DTO.reqstCreateBook request);
 
+    DTO.respBook update(DTO.reqstUpdateBook request);
+
 }

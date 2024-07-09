@@ -42,6 +42,22 @@ public class DTO {
     @Getter
     @Setter
     @Builder
+    public static class reqstUpdateBook {
+        @JsonIgnore
+        @NotNull
+        private Long id;
+        @NotBlank
+        @Size(max = 255)
+        private String title;
+        @NotNull
+        private Long author_id;
+        @NotNull
+        private Long genre_id;
+    }
+
+    @Getter
+    @Setter
+    @Builder
     public static class respDetailBook {
         private Long id;
         private String title;
