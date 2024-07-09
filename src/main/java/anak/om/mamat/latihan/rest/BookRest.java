@@ -6,7 +6,9 @@ import anak.om.mamat.latihan.rest.handler.RestResponse;
 import anak.om.mamat.latihan.utilities.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -56,6 +58,25 @@ public class BookRest {
                 .message(Constants.ITEM_EXIST_MESSAGE)
                 .data(respDetailBook)
                 .build();
+    }
+
+    @PostMapping(
+            path = "/create",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<RestResponse.object<DTO.respBook>> create(@RequestBody DTO.reqstCreateBook request) {
+
+        DTO.respBook respBook = services.create(request);
+
+        RestResponse.object<DTO.respBook> build = RestResponse.object.<DTO.respBook>builder()
+                .status_code(Constants.CREATED)
+                .message(Constants.CREATE_MESSAGE)
+                .data(respBook)
+                .build();
+
+        return new ResponseEntity<>(build, HttpStatus.CREATED);
+
     }
 
 }

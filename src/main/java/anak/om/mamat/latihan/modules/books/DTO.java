@@ -3,7 +3,9 @@ package anak.om.mamat.latihan.modules.books;
 import anak.om.mamat.latihan.modules.authors.AuthorEntity;
 import anak.om.mamat.latihan.modules.genres.GenreEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,6 +24,19 @@ public class DTO {
         private respGenre genre;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    public static class reqstCreateBook {
+        @NotBlank
+        @Size(max = 255)
+        private String title;
+        @NotNull
+        private Long author_id;
+        @NotNull
+        private Long genre_id;
     }
 
     @Getter

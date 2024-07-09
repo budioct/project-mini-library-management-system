@@ -10,4 +10,6 @@ public interface BookService {
 
     DTO.respDetailBook getDetail(DTO.reqstDetailBook request);
 
+    DTO.respBook create(DTO.reqstCreateBook request);
+
 }
