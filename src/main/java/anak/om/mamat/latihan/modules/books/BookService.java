@@ -14,4 +14,6 @@ public interface BookService {
 
     DTO.respBook update(DTO.reqstUpdateBook request);
 
+    void remove(DTO.reqstDetailBook request);
+
 }

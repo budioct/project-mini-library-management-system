@@ -99,4 +99,14 @@ public class BookServiceImpl implements BookService {
         return DTO.toRespBook(book);
     }
 
+    @Transactional
+    public void remove(DTO.reqstDetailBook request) {
+        validation.validate(request);
+
+        BookEntity book = bookRepository.findFirstById(request.getId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found"));
+
+        bookRepository.delete(book);
+    }
+
 }
