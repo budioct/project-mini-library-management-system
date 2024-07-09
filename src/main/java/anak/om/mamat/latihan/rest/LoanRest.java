@@ -59,5 +59,22 @@ public class LoanRest {
 
     }
 
+    @PostMapping(
+            path = "/create",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE
+    )
+    public RestResponse.object<DTO.respLoan> create(@RequestBody DTO.reqstCreateLoan request) {
+
+        DTO.respLoan respLoan = services.create(request);
+
+        return RestResponse.object.<DTO.respLoan>builder()
+                .status_code(Constants.OK)
+                .message(Constants.ITEM_EXIST_MESSAGE)
+                .data(respLoan)
+                .build();
+
+    }
+
 
 }

@@ -4,7 +4,9 @@ import anak.om.mamat.latihan.modules.authors.AuthorEntity;
 import anak.om.mamat.latihan.modules.books.BookEntity;
 import anak.om.mamat.latihan.modules.genres.GenreEntity;
 import anak.om.mamat.latihan.modules.members.MemberEntity;
+import anak.om.mamat.latihan.utilities.StringToDateConverter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
@@ -18,8 +20,8 @@ public class DTO {
     @Builder
     public static class respLoan {
         private Long id;
-        private LocalDate date_of_loan;
-        private LocalDate date_of_return;
+        private String date_of_loan;
+        private String date_of_return;
         private respMember member;
         private respBook book;
         private LocalDateTime createdAt;
@@ -34,6 +36,20 @@ public class DTO {
         @JsonIgnore
         @NotNull
         private Long id;
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    public static class reqstCreateLoan {
+        @NotBlank
+        private String date_of_loan;
+        @NotBlank
+        private String date_of_return;
+        @NotNull
+        private Long member_id;
+        @NotNull
+        private Long book_id;
     }
 
 
@@ -72,8 +88,8 @@ public class DTO {
     public static respLoan toRespLoan(LoanEntity entity) {
         return respLoan.builder()
                 .id(entity.getId())
-                .date_of_loan(entity.getDate_of_loan())
-                .date_of_return(entity.getDate_of_return())
+                .date_of_loan(StringToDateConverter.convert(entity.getDate_of_loan()))
+                .date_of_return(StringToDateConverter.convert(entity.getDate_of_return()))
                 .book(toRespBook(entity.getBook()))
                 .member(toRespMember(entity.getMember()))
                 .createdAt(entity.getCreatedAt())

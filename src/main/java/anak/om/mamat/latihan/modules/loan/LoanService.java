@@ -10,4 +10,6 @@ public interface LoanService {
 
     DTO.respLoan detail(DTO.reqstDetailLoan request);
 
+    DTO.respLoan create(DTO.reqstCreateLoan request);
+
 }
