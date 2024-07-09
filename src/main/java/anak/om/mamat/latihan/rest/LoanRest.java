@@ -41,5 +41,23 @@ public class LoanRest {
 
     }
 
+    @GetMapping(
+            path = "/{id}/detail",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public RestResponse.object<DTO.respLoan> detail(@PathVariable("id") Long id,
+                                                    DTO.reqstDetailLoan request) {
+
+        request.setId(id);
+        DTO.respLoan respLoan = services.detail(request);
+
+        return RestResponse.object.<DTO.respLoan>builder()
+                .status_code(Constants.OK)
+                .message(Constants.ITEM_EXIST_MESSAGE)
+                .data(respLoan)
+                .build();
+
+    }
+
 
 }

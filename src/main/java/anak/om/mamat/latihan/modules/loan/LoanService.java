@@ -8,4 +8,6 @@ public interface LoanService {
 
     Page<DTO.respLoan> fetchLoans(Map<String, Object> filter);
 
+    DTO.respLoan detail(DTO.reqstDetailLoan request);
+
 }

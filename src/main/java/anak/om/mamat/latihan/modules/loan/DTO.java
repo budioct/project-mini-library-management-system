@@ -4,6 +4,8 @@ import anak.om.mamat.latihan.modules.authors.AuthorEntity;
 import anak.om.mamat.latihan.modules.books.BookEntity;
 import anak.om.mamat.latihan.modules.genres.GenreEntity;
 import anak.om.mamat.latihan.modules.members.MemberEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -24,6 +26,16 @@ public class DTO {
         private LocalDateTime updatedAt;
 
     }
+
+    @Getter
+    @Setter
+    @Builder
+    public static class reqstDetailLoan {
+        @JsonIgnore
+        @NotNull
+        private Long id;
+    }
+
 
     @Getter
     @Setter
@@ -57,7 +69,7 @@ public class DTO {
         private String name;
     }
 
-    public static respLoan toRespLoan(LoanEntity entity){
+    public static respLoan toRespLoan(LoanEntity entity) {
         return respLoan.builder()
                 .id(entity.getId())
                 .date_of_loan(entity.getDate_of_loan())
