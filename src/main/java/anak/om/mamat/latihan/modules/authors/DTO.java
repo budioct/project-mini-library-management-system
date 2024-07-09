@@ -1,5 +1,6 @@
 package anak.om.mamat.latihan.modules.authors;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -43,7 +44,7 @@ public class DTO {
     @Setter
     @Builder
     public static class reqstUpdateAuthor {
-        @NotNull
+        @JsonIgnore
         private Long id;
         @NotBlank
         @Size(min = 2, max = 100)

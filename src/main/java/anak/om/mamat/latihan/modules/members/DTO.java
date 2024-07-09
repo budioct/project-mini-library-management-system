@@ -1,5 +1,6 @@
 package anak.om.mamat.latihan.modules.members;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -57,7 +58,7 @@ public class DTO {
     @NoArgsConstructor
     @Builder
     public static class reqstUpdateMember {
-        @NotNull
+        @JsonIgnore
         private Long id;
         @NotBlank
         private String name;
