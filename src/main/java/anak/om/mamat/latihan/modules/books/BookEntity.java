@@ -1,23 +1,52 @@
 package anak.om.mamat.latihan.modules.books;
 
+import anak.om.mamat.latihan.modules.authors.AuthorEntity;
+import anak.om.mamat.latihan.modules.genres.GenreEntity;
+import anak.om.mamat.latihan.modules.loan.LoanEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-//@Getter
-//@Setter
-//@AllArgsConstructor
-//@NoArgsConstructor
-//@Builder
-//@Entity
-//@Table(name = "books")
+import java.time.LocalDateTime;
+import java.util.List;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@EntityListeners(AuditingEntityListener.class)
+@Entity
+@Table(name = "books")
 public class BookEntity {
 
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @Column(name = "id")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
-//    @Column(name = "title")
+    @Column(name = "title")
     private String title;
+
+    @CreatedDate
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    @Column(name = "updated_at", insertable = false)
+    private LocalDateTime updatedAt;
+
+    @ManyToOne
+    @JoinColumn(name = "author_id")
+    private AuthorEntity author;
+
+    @ManyToOne
+    @JoinColumn(name = "genre_id", referencedColumnName = "id")
+    private GenreEntity genre;
+
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
+    private List<LoanEntity> loans;
 
 }

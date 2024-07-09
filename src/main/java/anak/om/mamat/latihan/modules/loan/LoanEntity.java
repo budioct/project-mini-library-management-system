@@ -1,14 +1,15 @@
-package anak.om.mamat.latihan.modules.genres;
+package anak.om.mamat.latihan.modules.loan;
 
 import anak.om.mamat.latihan.modules.books.BookEntity;
+import anak.om.mamat.latihan.modules.members.MemberEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @Setter
@@ -17,19 +18,19 @@ import java.util.List;
 @Builder
 @EntityListeners(AuditingEntityListener.class)
 @Entity
-@Table(name = "genres")
-public class GenreEntity {
+@Table(name = "loans")
+public class LoanEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long id;
+    Long id;
 
-    @Column(name = "name", nullable = false, length = 200)
-    private String name;
+    @Column(name = "date_of_loan")
+    private LocalDate date_of_loan;
 
-    @Column(name = "description", columnDefinition = "TEXT")
-    private String description;
+    @Column(name = "date_of_return")
+    private LocalDate date_of_return;
 
     @CreatedDate
     @Column(name = "created_at", updatable = false)
@@ -39,7 +40,12 @@ public class GenreEntity {
     @Column(name = "updated_at", insertable = false)
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "genre")
-    private List<BookEntity> books;
+    @ManyToOne
+    @JoinColumn(name = "book_id", referencedColumnName = "id")
+    private BookEntity book;
+
+    @ManyToOne
+    @JoinColumn(name = "member_id", referencedColumnName = "id")
+    private MemberEntity member;
 
 }
