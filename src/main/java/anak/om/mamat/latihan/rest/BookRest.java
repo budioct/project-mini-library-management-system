@@ -7,10 +7,7 @@ import anak.om.mamat.latihan.utilities.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -26,7 +23,7 @@ public class BookRest {
             path = "/fetch",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public RestResponse.list<List<DTO.respBook>> fetching(@RequestParam Map<String, Object> filter){
+    public RestResponse.list<List<DTO.respBook>> fetching(@RequestParam Map<String, Object> filter) {
 
         Page<DTO.respBook> respBooks = services.getBooks(filter);
 
@@ -42,6 +39,23 @@ public class BookRest {
                         .build())
                 .build();
 
+    }
+
+    @GetMapping(
+            path = "/{id}/detail",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public RestResponse.object<DTO.respDetailBook> getDetail(@PathVariable("id") Long id,
+                                                       DTO.reqstDetailBook request) {
+
+        request.setId(id);
+        DTO.respDetailBook respDetailBook = services.getDetail(request);
+
+        return RestResponse.object.<DTO.respDetailBook>builder()
+                .status_code(Constants.OK)
+                .message(Constants.ITEM_EXIST_MESSAGE)
+                .data(respDetailBook)
+                .build();
     }
 
 }

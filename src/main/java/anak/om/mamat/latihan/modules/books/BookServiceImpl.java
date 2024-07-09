@@ -36,4 +36,15 @@ public class BookServiceImpl implements BookService {
 
         return new PageImpl<>(respBooks, bookPage.getPageable(), bookPage.getTotalElements());
     }
+
+    @Transactional(readOnly = true)
+    public DTO.respDetailBook getDetail(DTO.reqstDetailBook request) {
+        validation.validate(request);
+
+        BookEntity book = bookRepository.findFirstById(request.getId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found"));
+
+        return DTO.toRespDetailBook(book);
+    }
+
 }

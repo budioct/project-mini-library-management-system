@@ -8,4 +8,6 @@ public interface BookService {
 
     Page<DTO.respBook> getBooks(Map<String, Object> filter);
 
+    DTO.respDetailBook getDetail(DTO.reqstDetailBook request);
+
 }
