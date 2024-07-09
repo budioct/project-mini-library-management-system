@@ -14,4 +14,6 @@ public interface GenreService {
 
     DTO.respGenre update(DTO.reqstUpdateGenre request);
 
+    void remove(DTO.reqstDetailGenre request);
+
 }

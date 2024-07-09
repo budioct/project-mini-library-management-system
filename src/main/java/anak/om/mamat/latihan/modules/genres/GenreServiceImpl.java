@@ -74,4 +74,15 @@ public class GenreServiceImpl implements GenreService {
         return DTO.toRespGenre(genre);
     }
 
+    @Transactional
+    public void remove(DTO.reqstDetailGenre request) {
+        validation.validate(request);
+
+        GenreEntity genre = repository.findFirstById(request.getId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Genre not found"));
+
+        repository.delete(genre);
+
+    }
+
 }
