@@ -1,5 +1,6 @@
 package anak.om.mamat.latihan.modules.genres;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
@@ -33,6 +34,18 @@ public class DTO {
     @Setter
     @Builder
     public static class reqstCreateGenre {
+        @NotBlank
+        private String name;
+        @NotBlank
+        private String description;
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    public static class reqstUpdateGenre {
+        @JsonIgnore
+        private Long id;
         @NotBlank
         private String name;
         @NotBlank

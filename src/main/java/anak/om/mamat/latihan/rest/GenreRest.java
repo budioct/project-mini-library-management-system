@@ -66,17 +66,36 @@ public class GenreRest {
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<RestResponse.object<DTO.respGenre>> create(@RequestBody DTO.reqstCreateGenre request){
+    public ResponseEntity<RestResponse.object<DTO.respGenre>> create(@RequestBody DTO.reqstCreateGenre request) {
 
         DTO.respGenre respGenre = services.create(request);
 
         RestResponse.object<DTO.respGenre> build = RestResponse.object.<DTO.respGenre>builder()
-                .status_code(Constants.OK)
-                .message(Constants.ITEM_EXIST_MESSAGE)
+                .status_code(Constants.CREATED)
+                .message(Constants.CREATE_MESSAGE)
                 .data(respGenre)
                 .build();
 
         return new ResponseEntity<>(build, HttpStatus.CREATED);
+
+    }
+
+    @PutMapping(
+            path = "{id}/update",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE
+    )
+    public RestResponse.object<DTO.respGenre> update(@PathVariable("id") Long id,
+                                                     @RequestBody DTO.reqstUpdateGenre request) {
+
+        request.setId(id);
+        DTO.respGenre respGenre = services.update(request);
+
+        return RestResponse.object.<DTO.respGenre>builder()
+                .status_code(Constants.OK)
+                .message(Constants.UPDATE_MESSAGE)
+                .data(respGenre)
+                .build();
 
     }
 

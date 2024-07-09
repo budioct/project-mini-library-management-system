@@ -12,4 +12,6 @@ public interface GenreService {
 
     DTO.respGenre create(DTO.reqstCreateGenre request);
 
+    DTO.respGenre update(DTO.reqstUpdateGenre request);
+
 }
