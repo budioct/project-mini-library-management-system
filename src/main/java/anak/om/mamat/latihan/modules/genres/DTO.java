@@ -1,5 +1,6 @@
 package anak.om.mamat.latihan.modules.genres;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,6 +18,14 @@ public class DTO {
         private String description;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    public static class reqstDetailGenre {
+        @NotNull
+        private Long id;
     }
 
     public static respGenre toRespGenre(GenreEntity entity) {

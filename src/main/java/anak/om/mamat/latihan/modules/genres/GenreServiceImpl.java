@@ -36,4 +36,14 @@ public class GenreServiceImpl implements GenreService {
         return new PageImpl<>(respGenres, genresPage.getPageable(), genresPage.getTotalElements());
     }
 
+    @Transactional(readOnly = true)
+    public DTO.respGenre detail(DTO.reqstDetailGenre request) {
+        validation.validate(request);
+
+        GenreEntity genre = repository.findFirstById(request.getId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Genre not found"));
+
+        return DTO.toRespGenre(genre);
+    }
+
 }

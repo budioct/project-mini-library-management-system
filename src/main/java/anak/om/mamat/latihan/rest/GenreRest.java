@@ -7,10 +7,7 @@ import anak.om.mamat.latihan.utilities.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -40,6 +37,24 @@ public class GenreRest {
                         .totalPage(respGenres.getTotalPages())
                         .sizePage(respGenres.getSize())
                         .build())
+                .build();
+
+    }
+
+    @GetMapping(
+            path = "{id}/detail",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public RestResponse.object<DTO.respGenre> detail(@PathVariable("id") Long id,
+                                                     DTO.reqstDetailGenre request) {
+
+        request.setId(id);
+        DTO.respGenre respGenre = services.detail(request);
+
+        return RestResponse.object.<DTO.respGenre>builder()
+                .status_code(Constants.OK)
+                .message(Constants.ITEM_EXIST_MESSAGE)
+                .data(respGenre)
                 .build();
 
     }
