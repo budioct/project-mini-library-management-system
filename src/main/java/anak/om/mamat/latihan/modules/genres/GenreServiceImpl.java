@@ -46,4 +46,17 @@ public class GenreServiceImpl implements GenreService {
         return DTO.toRespGenre(genre);
     }
 
+    @Transactional
+    public DTO.respGenre create(DTO.reqstCreateGenre request) {
+        validation.validate(request);
+
+        GenreEntity genre = new GenreEntity();
+        genre.setName(request.getName());
+        genre.setDescription(request.getDescription());
+
+        repository.save(genre);
+
+        return DTO.toRespGenre(genre);
+    }
+
 }

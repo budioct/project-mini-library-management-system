@@ -9,4 +9,7 @@ public interface GenreService {
     Page<DTO.respGenre> fetchGenres(Map<String, Object> filter);
 
     DTO.respGenre detail(DTO.reqstDetailGenre request);
+
+    DTO.respGenre create(DTO.reqstCreateGenre request);
+
 }
