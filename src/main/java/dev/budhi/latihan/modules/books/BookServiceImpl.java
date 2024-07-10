@@ -41,7 +41,7 @@ public class BookServiceImpl implements BookService {
         List<DTO.respBook> respBooks = bookPage.getContent().stream().map(DTO::toRespBook).collect(Collectors.toList());
 
         if (respBooks.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "list Authors not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "List Books not found");
         }
 
         return new PageImpl<>(respBooks, bookPage.getPageable(), bookPage.getTotalElements());

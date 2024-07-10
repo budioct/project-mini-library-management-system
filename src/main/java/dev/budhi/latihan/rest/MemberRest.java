@@ -4,6 +4,11 @@ import dev.budhi.latihan.modules.members.DTO;
 import dev.budhi.latihan.modules.members.MemberService;
 import dev.budhi.latihan.rest.handler.RestResponse;
 import dev.budhi.latihan.utilities.Constants;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -21,11 +26,16 @@ public class MemberRest {
     @Autowired
     MemberService services;
 
-    @PostMapping(
+    @Operation(summary = "Get all members", description = "Retrieve all members with optional pagination")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "The item exist"),
+            @ApiResponse(responseCode = "404", description = "List members not found", content = @Content(schema = @Schema(implementation = RestResponse.restError.class))),
+    })
+    @GetMapping(
             path = "/fetch",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public RestResponse.list<List<DTO.respMember>> fetching(@RequestBody Map<String, Object> filter) {
+    public RestResponse.list<List<DTO.respMember>> fetching(@RequestParam Map<String, Object> filter) {
 
         Page<DTO.respMember> respMembers = services.fetchMembers(filter);
 
@@ -43,28 +53,11 @@ public class MemberRest {
 
     }
 
-    @PostMapping(
-            path = "/fetch2",
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
-    public RestResponse.list<List<DTO.respMember>> fetching_ver2(@RequestParam Map<String, Object> filter) {
-
-        Page<DTO.respMember> respMembers = services.fetchMembers(filter);
-
-        return RestResponse.list.<List<DTO.respMember>>builder()
-                .data(respMembers.getContent())
-                .count_data(respMembers.getContent().size())
-                .paging(RestResponse.restPagingResponse.builder()
-                        .currentPage(respMembers.getNumber())
-                        .totalPage(respMembers.getTotalPages())
-                        .sizePage(respMembers.getSize())
-                        .build())
-                .status_code(Constants.OK)
-                .message(Constants.ITEM_EXIST_MESSAGE)
-                .build();
-
-    }
-
+    @Operation(summary = "Create a Member", description = "Create a new Member")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "The item was created successfully"),
+            @ApiResponse(responseCode = "400", description = "Phone number already in use", content = @Content(schema = @Schema(implementation = RestResponse.restError.class))),
+    })
     @PostMapping(
             path = "/create",
             produces = MediaType.APPLICATION_JSON_VALUE,
@@ -84,6 +77,12 @@ public class MemberRest {
 
     }
 
+    @Operation(summary = "Update a member", description = "Update an existing member by ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "The item was updated successfully"),
+            @ApiResponse(responseCode = "400", description = "Phone number already in use", content = @Content(schema = @Schema(implementation = RestResponse.restError.class))),
+            @ApiResponse(responseCode = "404", description = "Member not found", content = @Content(schema = @Schema(implementation = RestResponse.restError.class))),
+    })
     @PutMapping(
             path = "/{id}/update",
             produces = MediaType.APPLICATION_JSON_VALUE,
@@ -103,6 +102,11 @@ public class MemberRest {
 
     }
 
+    @Operation(summary = "Get a member by ID", description = "Retrieve detail member")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "The item exist"),
+            @ApiResponse(responseCode = "404", description = "Member not found", content = @Content(schema = @Schema(implementation = RestResponse.restError.class))),
+    })
     @GetMapping(
             path = "/{id}/detail",
             produces = MediaType.APPLICATION_JSON_VALUE
@@ -121,6 +125,11 @@ public class MemberRest {
 
     }
 
+    @Operation(summary = "Delete a member", description = "Delete an existing member by ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "The item was deleted successfully"),
+            @ApiResponse(responseCode = "404", description = "Member not found", content = @Content(schema = @Schema(implementation = RestResponse.restError.class))),
+    })
     @DeleteMapping(
             path = "{id}/remove",
             produces = MediaType.APPLICATION_JSON_VALUE

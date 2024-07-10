@@ -30,7 +30,7 @@ public class AuthorServiceImpl implements AuthorService {
         List<DTO.respAuthor> respAuthors = authorsPage.getContent().stream().map(DTO::toRespAuthor).toList();
 
         if (respAuthors.size() == 0){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "list Authors not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "List Authors not found");
         }
 
         return new PageImpl<>(respAuthors, authorsPage.getPageable(), authorsPage.getTotalElements());

@@ -4,6 +4,11 @@ import dev.budhi.latihan.modules.loan.DTO;
 import dev.budhi.latihan.modules.loan.LoanService;
 import dev.budhi.latihan.rest.handler.RestResponse;
 import dev.budhi.latihan.utilities.Constants;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -21,6 +26,11 @@ public class LoanRest {
     @Autowired
     LoanService services;
 
+    @Operation(summary = "Get all loans", description = "Retrieve all loans with optional pagination")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "The item exist"),
+            @ApiResponse(responseCode = "404", description = "List loans not found", content = @Content(schema = @Schema(implementation = RestResponse.restError.class))),
+    })
     @GetMapping(
             path = "/fetch",
             produces = MediaType.APPLICATION_JSON_VALUE
@@ -43,6 +53,11 @@ public class LoanRest {
 
     }
 
+    @Operation(summary = "Get a loan by ID", description = "Retrieve detail loan")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "The item exist"),
+            @ApiResponse(responseCode = "404", description = "Loan not found", content = @Content(schema = @Schema(implementation = RestResponse.restError.class))),
+    })
     @GetMapping(
             path = "/{id}/detail",
             produces = MediaType.APPLICATION_JSON_VALUE
@@ -61,6 +76,11 @@ public class LoanRest {
 
     }
 
+    @Operation(summary = "Create a Loan", description = "Create a new Loan")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "The item was created successfully"),
+            @ApiResponse(responseCode = "404", description = "Member not found / Book not found", content = @Content(schema = @Schema(implementation = RestResponse.restError.class))),
+    })
     @PostMapping(
             path = "/create",
             produces = MediaType.APPLICATION_JSON_VALUE,
@@ -80,6 +100,11 @@ public class LoanRest {
 
     }
 
+    @Operation(summary = "Update a loan", description = "Update an existing loan by ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "The item was updated successfully"),
+            @ApiResponse(responseCode = "404", description = "Loan not found / Member not found / Book not found", content = @Content(schema = @Schema(implementation = RestResponse.restError.class))),
+    })
     @PutMapping(
             path = "/{id}/update",
             produces = MediaType.APPLICATION_JSON_VALUE,
@@ -99,6 +124,11 @@ public class LoanRest {
 
     }
 
+    @Operation(summary = "Delete a loan", description = "Delete an existing loan by ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "The item was deleted successfully"),
+            @ApiResponse(responseCode = "404", description = "Loan not found", content = @Content(schema = @Schema(implementation = RestResponse.restError.class))),
+    })
     @DeleteMapping(
             path = "{id}/remove",
             produces = MediaType.APPLICATION_JSON_VALUE

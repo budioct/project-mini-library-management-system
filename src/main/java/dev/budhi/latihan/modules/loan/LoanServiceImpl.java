@@ -48,7 +48,7 @@ public class LoanServiceImpl implements LoanService {
         List<DTO.respLoan> respLoans = loansPage.getContent().stream().map(DTO::toRespLoan).collect(Collectors.toList());
 
         if (respLoans.isEmpty()){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No loan found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "List loans not found");
         }
 
         return new PageImpl<>(respLoans, loansPage.getPageable(), loansPage.getTotalElements());
@@ -59,7 +59,7 @@ public class LoanServiceImpl implements LoanService {
         validation.validate(request);
 
         LoanEntity loan = loanRepository.findFirstById(request.getId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "loan not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Loan not found"));
 
         return DTO.toRespLoan(loan);
     }
@@ -69,10 +69,10 @@ public class LoanServiceImpl implements LoanService {
         validation.validate(request);
 
         MemberEntity member = memberRepository.findFirstById(request.getMember_id())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "member not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Member not found"));
 
         BookEntity book = bookRepository.findFirstById(request.getBook_id())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "book not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found"));
 
         LoanEntity loan = new LoanEntity();
         loan.setDate_of_loan(converter.convert(request.getDate_of_loan()));
@@ -90,13 +90,13 @@ public class LoanServiceImpl implements LoanService {
         validation.validate(request);
 
         LoanEntity loan = loanRepository.findFirstById(request.getId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "loan not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Loan not found"));
 
         MemberEntity member = memberRepository.findFirstById(request.getMember_id())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "member not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Member not found"));
 
         BookEntity book = bookRepository.findFirstById(request.getBook_id())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "book not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found"));
 
         loan.setDate_of_loan(converter.convert(request.getDate_of_loan()));
         loan.setDate_of_return(converter.convert(request.getDate_of_return()));
@@ -113,7 +113,7 @@ public class LoanServiceImpl implements LoanService {
         validation.validate(request);
 
         LoanEntity loan = loanRepository.findFirstById(request.getId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "loan not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Loan not found"));
 
         loanRepository.delete(loan);
     }

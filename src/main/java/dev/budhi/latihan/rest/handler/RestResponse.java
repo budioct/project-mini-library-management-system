@@ -1,5 +1,6 @@
 package dev.budhi.latihan.rest.handler;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
@@ -35,9 +36,13 @@ public class RestResponse {
     @Setter
     @Data
     @Builder
+    @Schema(description = "Response wrapper for errors")
     public static class restError<T> {
+        @Schema(description = "Status code")
         private Integer status_code;
+        @Schema(description = "Message")
         private String message;
+        @Schema(description = "Errors")
         private String errors;
     }
 

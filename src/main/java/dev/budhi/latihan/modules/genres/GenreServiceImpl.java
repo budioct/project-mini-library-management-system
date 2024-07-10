@@ -30,7 +30,7 @@ public class GenreServiceImpl implements GenreService {
         List<DTO.respGenre> respGenres = genresPage.getContent().stream().map(DTO::toRespGenre).toList();
 
         if (respGenres.isEmpty()){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "list Genres not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "List Genres not found");
         }
 
         return new PageImpl<>(respGenres, genresPage.getPageable(), genresPage.getTotalElements());

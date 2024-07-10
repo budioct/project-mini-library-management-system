@@ -4,6 +4,11 @@ import dev.budhi.latihan.modules.genres.DTO;
 import dev.budhi.latihan.modules.genres.GenreService;
 import dev.budhi.latihan.rest.handler.RestResponse;
 import dev.budhi.latihan.utilities.Constants;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -21,6 +26,11 @@ public class GenreRest {
     @Autowired
     GenreService services;
 
+    @Operation(summary = "Get all genres", description = "Retrieve all genres with optional pagination")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "The item exist"),
+            @ApiResponse(responseCode = "404", description = "List genres not found", content = @Content(schema = @Schema(implementation = RestResponse.restError.class))),
+    })
     @GetMapping(
             path = "/fetch",
             produces = MediaType.APPLICATION_JSON_VALUE
@@ -43,6 +53,11 @@ public class GenreRest {
 
     }
 
+    @Operation(summary = "Get a genre by ID", description = "Retrieve detail genre")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "The item exist"),
+            @ApiResponse(responseCode = "404", description = "Genre not found", content = @Content(schema = @Schema(implementation = RestResponse.restError.class))),
+    })
     @GetMapping(
             path = "{id}/detail",
             produces = MediaType.APPLICATION_JSON_VALUE
@@ -61,6 +76,10 @@ public class GenreRest {
 
     }
 
+    @Operation(summary = "Create a Genre", description = "Create a new Genre")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "The item was created successfully"),
+    })
     @PostMapping(
             path = "/create",
             produces = MediaType.APPLICATION_JSON_VALUE,
@@ -80,6 +99,12 @@ public class GenreRest {
 
     }
 
+
+    @Operation(summary = "Update a genre", description = "Update an existing genre by ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "The item was updated successfully"),
+            @ApiResponse(responseCode = "404", description = "Genre not found", content = @Content(schema = @Schema(implementation = RestResponse.restError.class))),
+    })
     @PutMapping(
             path = "{id}/update",
             produces = MediaType.APPLICATION_JSON_VALUE,
@@ -99,6 +124,11 @@ public class GenreRest {
 
     }
 
+    @Operation(summary = "Delete a genre", description = "Delete an existing genre by ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "The item was deleted successfully"),
+            @ApiResponse(responseCode = "404", description = "Genre not found", content = @Content(schema = @Schema(implementation = RestResponse.restError.class))),
+    })
     @DeleteMapping(
             path = "{id}/remove",
             produces = MediaType.APPLICATION_JSON_VALUE

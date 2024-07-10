@@ -4,6 +4,11 @@ import dev.budhi.latihan.modules.books.BookService;
 import dev.budhi.latihan.modules.books.DTO;
 import dev.budhi.latihan.rest.handler.RestResponse;
 import dev.budhi.latihan.utilities.Constants;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -21,6 +26,11 @@ public class BookRest {
     @Autowired
     BookService services;
 
+    @Operation(summary = "Get all books", description = "Retrieve all books with optional pagination")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "The item exist"),
+            @ApiResponse(responseCode = "404", description = "List books not found", content = @Content(schema = @Schema(implementation = RestResponse.restError.class))),
+    })
     @GetMapping(
             path = "/fetch",
             produces = MediaType.APPLICATION_JSON_VALUE
@@ -43,6 +53,11 @@ public class BookRest {
 
     }
 
+    @Operation(summary = "Get a book by ID", description = "Retrieve detail book")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "The item exist"),
+            @ApiResponse(responseCode = "404", description = "Book not found", content = @Content(schema = @Schema(implementation = RestResponse.restError.class))),
+    })
     @GetMapping(
             path = "/{id}/detail",
             produces = MediaType.APPLICATION_JSON_VALUE
@@ -60,6 +75,11 @@ public class BookRest {
                 .build();
     }
 
+    @Operation(summary = "Create a Book", description = "Create a new Book")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "The item was created successfully"),
+            @ApiResponse(responseCode = "404", description = "Author not found / Genre not found", content = @Content(schema = @Schema(implementation = RestResponse.restError.class))),
+    })
     @PostMapping(
             path = "/create",
             produces = MediaType.APPLICATION_JSON_VALUE,
@@ -79,6 +99,11 @@ public class BookRest {
 
     }
 
+    @Operation(summary = "Update a book", description = "Update an existing book by ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "The item was updated successfully"),
+            @ApiResponse(responseCode = "404", description = "Book not found / Author not found / Genre not found", content = @Content(schema = @Schema(implementation = RestResponse.restError.class))),
+    })
     @PutMapping(
             path = "/{id}/update",
             produces = MediaType.APPLICATION_JSON_VALUE,
@@ -98,6 +123,11 @@ public class BookRest {
 
     }
 
+    @Operation(summary = "Delete a book", description = "Delete an existing book by ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "The item was deleted successfully"),
+            @ApiResponse(responseCode = "404", description = "Book not found", content = @Content(schema = @Schema(implementation = RestResponse.restError.class))),
+    })
     @DeleteMapping(
             path = "/{id}/remove",
             produces = MediaType.APPLICATION_JSON_VALUE

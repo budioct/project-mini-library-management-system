@@ -31,7 +31,7 @@ public class MemberServiceImpl implements MemberService {
         List<DTO.respMember> respMembers = membersPage.getContent().stream().map(DTO::toRespMember).collect(Collectors.toList());
 
         if (respMembers.size() == 0) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "list Members not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "List members not found");
         }
 
         return new PageImpl<>(respMembers, membersPage.getPageable(), membersPage.getTotalElements());
@@ -53,7 +53,7 @@ public class MemberServiceImpl implements MemberService {
         MemberEntity save = repository.save(member);
 
         if (save.getId() == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "member do not save");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Member do not save");
         }
 
         return DTO.toRespMember(save);
@@ -69,7 +69,7 @@ public class MemberServiceImpl implements MemberService {
         }
 
         MemberEntity member = repository.findFirstById(request.getId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "member not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Member not found"));
 
         member.setName(request.getName());
         member.setPhone(request.getPhone());
@@ -78,7 +78,7 @@ public class MemberServiceImpl implements MemberService {
         MemberEntity save = repository.save(member);
 
         if (save.getId() == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "member do not save");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Member do not save");
         }
 
         return DTO.toRespMember(save);
@@ -89,7 +89,7 @@ public class MemberServiceImpl implements MemberService {
         validation.validate(request);
 
         MemberEntity member = repository.findFirstById(request.getId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "member not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Member not found"));
 
         return DTO.toRespMember(member);
     }
@@ -99,7 +99,7 @@ public class MemberServiceImpl implements MemberService {
         validation.validate(request);
 
         MemberEntity member = repository.findFirstById(request.getId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "member not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Member not found"));
 
         //repository.deleteById(member.getId()); // hapus berdasarkan id
         repository.delete(member); // hapus berdasarkan instance
