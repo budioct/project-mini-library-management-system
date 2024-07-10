@@ -110,4 +110,14 @@ public class LoanServiceImpl implements LoanService {
         return DTO.toRespLoan(loan);
     }
 
+    @Transactional
+    public void remove(DTO.reqstDetailLoan request) {
+        validation.validate(request);
+
+        LoanEntity loan = loanRepository.findFirstById(request.getId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "loan not found"));
+
+        loanRepository.delete(loan);
+    }
+
 }

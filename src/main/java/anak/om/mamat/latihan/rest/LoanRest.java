@@ -99,5 +99,23 @@ public class LoanRest {
 
     }
 
+    @DeleteMapping(
+            path = "{id}/remove",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public RestResponse.object<String> remove(@PathVariable("id") Long id,
+                                              DTO.reqstDetailLoan request) {
+
+        request.setId(id);
+        services.remove(request);
+
+        return RestResponse.object.<String>builder()
+                .status_code(Constants.OK)
+                .message(Constants.DELETE_MESSAGE)
+                .data("")
+                .build();
+
+    }
+
 
 }

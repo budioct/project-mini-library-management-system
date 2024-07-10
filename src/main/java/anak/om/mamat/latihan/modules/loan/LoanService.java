@@ -14,4 +14,6 @@ public interface LoanService {
 
     DTO.respLoan update(DTO.reqstUpdateLoan request);
 
+    void remove(DTO.reqstDetailLoan request);
+
 }
