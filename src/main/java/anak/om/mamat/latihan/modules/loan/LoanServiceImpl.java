@@ -7,6 +7,8 @@ import anak.om.mamat.latihan.modules.members.MemberEntity;
 import anak.om.mamat.latihan.modules.members.MemberRepository;
 import anak.om.mamat.latihan.utilities.StringToDateConverter;
 import anak.om.mamat.latihan.utilities.ValidationService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -24,6 +26,7 @@ import java.util.stream.Collectors;
 @Service
 public class LoanServiceImpl implements LoanService {
 
+    private static final Logger log = LoggerFactory.getLogger(LoanServiceImpl.class);
     @Autowired
     private ValidationService validation;
 
@@ -83,4 +86,28 @@ public class LoanServiceImpl implements LoanService {
 
         return DTO.toRespLoan(loan);
     }
+
+    @Transactional
+    public DTO.respLoan update(DTO.reqstUpdateLoan request) {
+        validation.validate(request);
+
+        LoanEntity loan = loanRepository.findFirstById(request.getId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "loan not found"));
+
+        MemberEntity member = memberRepository.findFirstById(request.getMember_id())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "member not found"));
+
+        BookEntity book = bookRepository.findFirstById(request.getBook_id())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "book not found"));
+
+        loan.setDate_of_loan(converter.convert(request.getDate_of_loan()));
+        loan.setDate_of_return(converter.convert(request.getDate_of_return()));
+        loan.setMember(member);
+        loan.setBook(book);
+
+        loanRepository.save(loan);
+
+        return DTO.toRespLoan(loan);
+    }
+
 }

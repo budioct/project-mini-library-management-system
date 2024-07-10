@@ -52,6 +52,23 @@ public class DTO {
         private Long book_id;
     }
 
+    @Getter
+    @Setter
+    @Builder
+    public static class reqstUpdateLoan {
+        @JsonIgnore
+        @NotNull
+        private Long id;
+        @NotBlank
+        private String date_of_loan;
+        @NotBlank
+        private String date_of_return;
+        @NotNull
+        private Long member_id;
+        @NotNull
+        private Long book_id;
+    }
+
 
     @Getter
     @Setter
