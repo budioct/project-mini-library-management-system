@@ -1,5 +1,10 @@
 package anak.om.mamat.latihan.modules.members;
 
+import anak.om.mamat.latihan.modules.authors.AuthorEntity;
+import anak.om.mamat.latihan.modules.books.BookEntity;
+import anak.om.mamat.latihan.modules.genres.GenreEntity;
+import anak.om.mamat.latihan.modules.loan.LoanEntity;
+import anak.om.mamat.latihan.utilities.StringToDateConverter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -7,6 +12,8 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class DTO {
 
@@ -20,6 +27,7 @@ public class DTO {
         private String name;
         private String address;
         private String phone;
+        private List<respLoan> loans;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
     }
@@ -69,6 +77,40 @@ public class DTO {
         private String phone;
     }
 
+    @Getter
+    @Setter
+    @Builder
+    public static class respLoan {
+        private Long id;
+        private String date_of_loan;
+        private String date_of_return;
+        private respBook book;
+
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    public static class respBook {
+        private String title;
+        private respAuthor author;
+        private respGenre genre;
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    public static class respAuthor {
+        private String name;
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    public static class respGenre {
+        private String name;
+    }
+
 
     public static respMember toRespMember(MemberEntity entity) {
         return respMember.builder()
@@ -76,10 +118,40 @@ public class DTO {
                 .name(entity.getName())
                 .address(entity.getAddress())
                 .phone(entity.getPhone())
+                .loans(entity.getLoans().stream().map(DTO::toRespLoan).collect(Collectors.toList()))
                 .createdAt(entity.getCreatedAt())
                 .updatedAt(entity.getUpdatedAt())
                 .build();
 
+    }
+
+    public static respLoan toRespLoan(LoanEntity entity) {
+        return respLoan.builder()
+                .id(entity.getId())
+                .date_of_loan(StringToDateConverter.convert(entity.getDate_of_loan()))
+                .date_of_return(StringToDateConverter.convert(entity.getDate_of_return()))
+                .book(toRespBook(entity.getBook()))
+                .build();
+    }
+
+    public static respBook toRespBook(BookEntity entity) {
+        return respBook.builder()
+                .title(entity.getTitle())
+                .author(toRespAuthor(entity.getAuthor()))
+                .genre(toRespGenre(entity.getGenre()))
+                .build();
+    }
+
+    public static respAuthor toRespAuthor(AuthorEntity entity) {
+        return respAuthor.builder()
+                .name(entity.getName())
+                .build();
+    }
+
+    public static respGenre toRespGenre(GenreEntity entity) {
+        return respGenre.builder()
+                .name(entity.getName())
+                .build();
     }
 
 }
