@@ -2,6 +2,8 @@ package anak.om.mamat.latihan.modules.books;
 
 import anak.om.mamat.latihan.modules.authors.AuthorEntity;
 import anak.om.mamat.latihan.modules.genres.GenreEntity;
+import anak.om.mamat.latihan.modules.loan.LoanEntity;
+import anak.om.mamat.latihan.utilities.StringToDateConverter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -11,6 +13,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class DTO {
 
@@ -22,6 +26,7 @@ public class DTO {
         private String title;
         private respAuthor author;
         private respGenre genre;
+        private List<respLoan> loans;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
     }
@@ -58,11 +63,21 @@ public class DTO {
     @Getter
     @Setter
     @Builder
+    public static class respLoan {
+        private Long id;
+        private String date_of_loan;
+        private String date_of_return;
+    }
+
+    @Getter
+    @Setter
+    @Builder
     public static class respDetailBook {
         private Long id;
         private String title;
         private respDetailAuthor author;
         private respDetailGenre genre;
+        private List<respLoan> loans;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
     }
@@ -116,6 +131,7 @@ public class DTO {
                 .title(entity.getTitle())
                 .author(toRespAuthor(entity.getAuthor()))
                 .genre(toRespGenre(entity.getGenre()))
+                .loans(entity.getLoans().stream().map(DTO::toRespLoan).collect(Collectors.toList()))
                 .createdAt(entity.getCreatedAt())
                 .updatedAt(entity.getUpdatedAt())
                 .build();
@@ -127,6 +143,7 @@ public class DTO {
                 .title(entity.getTitle())
                 .author(toRespDetailAuthor(entity.getAuthor()))
                 .genre(toRespDetailGenre(entity.getGenre()))
+                .loans(entity.getLoans().stream().map(DTO::toRespLoan).collect(Collectors.toList()))
                 .createdAt(entity.getCreatedAt())
                 .updatedAt(entity.getUpdatedAt())
                 .build();
@@ -159,6 +176,14 @@ public class DTO {
                 .description(entity.getDescription())
                 .createdAt(entity.getCreatedAt())
                 .updatedAt(entity.getUpdatedAt())
+                .build();
+    }
+
+    public static respLoan toRespLoan(LoanEntity entity) {
+        return respLoan.builder()
+                .id(entity.getId())
+                .date_of_loan(StringToDateConverter.convert(entity.getDate_of_loan()))
+                .date_of_return(StringToDateConverter.convert(entity.getDate_of_return()))
                 .build();
     }
 
