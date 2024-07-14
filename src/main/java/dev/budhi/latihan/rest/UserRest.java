@@ -100,5 +100,24 @@ public class UserRest {
 
     }
 
+    @PostMapping(
+            path = "/change-password",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE
+    )
+    public RestResponse.object<String> changePassword(@RequestBody DTO.ChangePasswordRequest request,
+                                                      @AuthenticationPrincipal UserDetails userDetails) {
+
+        services.changePassword(request, userDetails);
+
+        return RestResponse.object.<String>builder()
+                .status_code(Constants.OK)
+                .message(Constants.AUTH_CHANGE_PASSWORD_MESSAGE)
+                .data("")
+                .build();
+
+    }
+
+
 
 }

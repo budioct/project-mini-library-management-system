@@ -115,6 +115,32 @@ public class UserServiceImpl implements UserService {
         return data;
     }
 
+    @Transactional
+    public void changePassword(DTO.ChangePasswordRequest request, UserDetails userDetails) {
+        validation.validate(request);
+
+        if (userDetails == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User is not authenticated");
+        }
+
+        UserEntity user = userRepository.findFirstByEmail(userDetails.getUsername())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User is not authenticated"));
+
+        // check if the current password is correct
+        if (!passwordEncoder.matches(request.getCurrentPassword(), user.getPassword())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Wrong Password");
+        }
+        // check if the two new passwords are the same
+        if (!request.getNewPassword().equals(request.getConfirmationPassword())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Password are not the same");
+        }
+
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+
+        userRepository.save(user);
+    }
+
+
 
     private void saveUserToken(UserEntity user, String jwtToken) {
         TokenEntity token = new TokenEntity();

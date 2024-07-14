@@ -11,4 +11,6 @@ public interface UserService {
     DTO.RegisterResponse register(DTO.RegisterRequest request);
     DTO.LoginResponse login(DTO.LoginRequest request);
     DTO.LoginResponse refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException;
+    void changePassword(DTO.ChangePasswordRequest request, UserDetails userDetails);
+
 }

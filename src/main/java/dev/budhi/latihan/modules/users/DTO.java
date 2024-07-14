@@ -56,5 +56,21 @@ public class DTO {
         private String password;
     }
 
+    @Getter
+    @Setter
+    @Builder
+    public static class ChangePasswordRequest {
+        @NotBlank
+        @Size(min = 8, max = 255)
+        private String currentPassword;
+        @NotBlank
+        @Size(min = 8, max = 255)
+        private String newPassword;
+        @NotBlank
+        @Size(min = 8, max = 255)
+        private String confirmationPassword;
+    }
+
+
 
 }
