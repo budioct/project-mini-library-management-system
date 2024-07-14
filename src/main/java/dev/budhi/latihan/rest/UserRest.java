@@ -27,6 +27,7 @@ import java.io.IOException;
 public class UserRest {
 
     private final UserService services;
+    private final LogoutService logoutService;
 
     @PostMapping(
             path = "/register",
@@ -77,6 +78,24 @@ public class UserRest {
                 .status_code(Constants.OK)
                 .message(Constants.AUTH_REFRESH_TOKEN_MESSAGE)
                 .data(loginResponse)
+                .build();
+
+    }
+
+    @PostMapping(
+            path = "/logout",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public RestResponse.object<String> logout(HttpServletRequest request,
+                                              HttpServletResponse response,
+                                              Authentication authentication) {
+
+        logoutService.logout(request, response, authentication);
+
+        return RestResponse.object.<String>builder()
+                .status_code(Constants.OK)
+                .message(Constants.AUTH_LOGOUT_MESSAGE)
+                .data("")
                 .build();
 
     }
