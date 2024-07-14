@@ -28,10 +28,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private final PasswordEncoder passwordEncoder;
-
-    private final UserRepository userRepository;
     private final ValidationService validation;
+    private final AuthenticationManager authenticationManager;
+    private final JwtService jwtService;
+    private final PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+    private final TokenRepository tokenRepository;
 
     @Transactional
     public DTO.RegisterResponse register(DTO.RegisterRequest request) {
@@ -54,6 +56,54 @@ public class UserServiceImpl implements UserService {
                 .role(saveUser.getRole())
                 .build();
     }
+
+    @Transactional
+    public DTO.LoginResponse login(DTO.LoginRequest request) {
+        validation.validate(request);
+
+        UserEntity user = userRepository.findFirstByEmail(request.getEmail())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Wrong Email"));
+
+        if (!BCrypt.checkpw(request.getPassword(), user.getPassword())) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Wrong password");
+        }
+
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
+        );
+
+        String jwtToken = jwtService.generateToken(user);
+        String refreshToken = jwtService.generateRefreshToken(user);
+        revokeAllUserTokens(user);
+        saveUserToken(user, jwtToken);
+
+        return DTO.LoginResponse.builder()
+                .accessToken(jwtToken)
+                .refreshToken(refreshToken)
+                .build();
+    }
+
+    private void saveUserToken(UserEntity user, String jwtToken) {
+        TokenEntity token = new TokenEntity();
+        token.setUser(user);
+        token.setToken(jwtToken);
+        token.setTokenType(TokenType.BEARER);
+        token.setExpired(false);
+        token.setRevoked(false);
+        tokenRepository.save(token);
+    }
+
+    private void revokeAllUserTokens(UserEntity entity) {
+        List<TokenEntity> validUserTokens = tokenRepository.findAllValidtokenByUser(entity.getId());
+        if (validUserTokens.isEmpty()) {
+            return;
+        }
+        validUserTokens.forEach(token -> {
+            token.setExpired(true);
+            token.setRevoked(true);
+        });
+    }
+
 
 }
 

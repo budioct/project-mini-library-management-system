@@ -36,4 +36,25 @@ public class DTO {
         private String role;
     }
 
+    @Getter
+    @Setter
+    @Builder
+    public static class LoginResponse {
+        @JsonProperty("access_token")
+        private String accessToken;
+        @JsonProperty("refresh_token")
+        private String refreshToken;
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    public static class LoginRequest {
+        @NotBlank
+        private String email;
+        @NotBlank
+        private String password;
+    }
+
+
 }

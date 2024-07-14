@@ -47,5 +47,22 @@ public class UserRest {
 
     }
 
+    @PostMapping(
+            path = "/login",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE
+    )
+    public RestResponse.object<DTO.LoginResponse> login(@RequestBody DTO.LoginRequest request) {
+
+        DTO.LoginResponse loginResponse = services.login(request);
+
+        return RestResponse.object.<DTO.LoginResponse>builder()
+                .status_code(Constants.OK)
+                .message(Constants.AUTH_LOGIN_MESSAGE)
+                .data(loginResponse)
+                .build();
+
+    }
+
 
 }

@@ -9,5 +9,6 @@ import java.io.IOException;
 public interface UserService {
 
     DTO.RegisterResponse register(DTO.RegisterRequest request);
+    DTO.LoginResponse login(DTO.LoginRequest request);
 
 }
