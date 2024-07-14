@@ -83,6 +83,39 @@ public class UserServiceImpl implements UserService {
                 .build();
     }
 
+    @Transactional
+    public DTO.LoginResponse refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        final String authHeder = request.getHeader(HttpHeaders.AUTHORIZATION);
+        final String refreshToken;
+        final String userEmail;
+        DTO.LoginResponse data = null;
+
+        if (authHeder == null || !authHeder.startsWith("Bearer ")) {
+            return null;
+        }
+
+        refreshToken = authHeder.substring(7);
+        userEmail = jwtService.extractUsername(refreshToken);
+
+        if (userEmail != null) {
+            UserEntity user = this.userRepository.findFirstByEmail(userEmail)
+                    .orElseThrow();
+
+            if (jwtService.isTokenValid(refreshToken, user)) {
+                String accessToken = jwtService.generateToken(user);
+                revokeAllUserTokens(user);
+                saveUserToken(user, accessToken);
+
+                data = DTO.LoginResponse.builder()
+                        .accessToken(accessToken)
+                        .refreshToken(refreshToken)
+                        .build();
+            }
+        }
+        return data;
+    }
+
+
     private void saveUserToken(UserEntity user, String jwtToken) {
         TokenEntity token = new TokenEntity();
         token.setUser(user);

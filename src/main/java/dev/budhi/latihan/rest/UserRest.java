@@ -64,5 +64,22 @@ public class UserRest {
 
     }
 
+    @PostMapping(
+            path = "/refresh-token",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public RestResponse.object<DTO.LoginResponse> refreshToken(HttpServletRequest request,
+                                                               HttpServletResponse response) throws IOException {
+
+        DTO.LoginResponse loginResponse = services.refreshToken(request, response);
+
+        return RestResponse.object.<DTO.LoginResponse>builder()
+                .status_code(Constants.OK)
+                .message(Constants.AUTH_REFRESH_TOKEN_MESSAGE)
+                .data(loginResponse)
+                .build();
+
+    }
+
 
 }
