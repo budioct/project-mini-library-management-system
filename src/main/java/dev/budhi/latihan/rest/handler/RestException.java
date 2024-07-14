@@ -1,6 +1,7 @@
 package dev.budhi.latihan.rest.handler;
 
 import dev.budhi.latihan.utilities.Constants;
+import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,11 +15,28 @@ import java.time.format.DateTimeParseException;
 @RestControllerAdvice
 public class RestException {
 
+    // standart spring validation
+    //@ExceptionHandler(ConstraintViolationException.class)
+    //public ResponseEntity<RestResponse.restError<String>> constraintViolationException(ConstraintViolationException exception) {
+    //    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+    //            .body(RestResponse.restError.<String>builder()
+    //                    .errors(exception.getMessage())
+    //                    .status_code(Constants.BAD_REQUEST)
+    //                    .message(Constants.VALIDATION_MESSAGE)
+    //                    .build());
+    //}
+
+    // with enum
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<RestResponse.restError<String>> constraintViolationException(ConstraintViolationException exception) {
+        StringBuilder errors = new StringBuilder();
+        for (ConstraintViolation<?> violation : exception.getConstraintViolations()) {
+            errors.append(violation.getMessage()).append("; ");
+        }
+
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(RestResponse.restError.<String>builder()
-                        .errors(exception.getMessage())
+                        .errors(errors.toString())
                         .status_code(Constants.BAD_REQUEST)
                         .message(Constants.VALIDATION_MESSAGE)
                         .build());
