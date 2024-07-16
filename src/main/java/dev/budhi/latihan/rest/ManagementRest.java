@@ -1,11 +1,10 @@
 package dev.budhi.latihan.rest;
 
 import io.swagger.v3.oas.annotations.Hidden;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/managment")
+@RequestMapping("/api/v1/management")
 public class ManagementRest {
 
     @GetMapping
