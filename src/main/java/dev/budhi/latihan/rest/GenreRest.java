@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,6 +22,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/genre")
+@PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
 public class GenreRest {
 
     @Autowired
@@ -35,6 +37,7 @@ public class GenreRest {
             path = "/fetch",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
+    @PreAuthorize("hasAnyAuthority('admin:read', 'management:read')")
     public RestResponse.list<List<DTO.respGenre>> fetching(@RequestParam Map<String, Object> filter) {
 
         Page<DTO.respGenre> respGenres = services.fetchGenres(filter);
@@ -62,6 +65,7 @@ public class GenreRest {
             path = "{id}/detail",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
+    @PreAuthorize("hasAnyAuthority('admin:read', 'management:read')")
     public RestResponse.object<DTO.respGenre> detail(@PathVariable("id") Long id,
                                                      DTO.reqstDetailGenre request) {
 
@@ -85,6 +89,7 @@ public class GenreRest {
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
+    @PreAuthorize("hasAnyAuthority('admin:create', 'management:create')")
     public ResponseEntity<RestResponse.object<DTO.respGenre>> create(@RequestBody DTO.reqstCreateGenre request) {
 
         DTO.respGenre respGenre = services.create(request);
@@ -110,6 +115,7 @@ public class GenreRest {
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
+    @PreAuthorize("hasAnyAuthority('admin:update', 'management:update')")
     public RestResponse.object<DTO.respGenre> update(@PathVariable("id") Long id,
                                                      @RequestBody DTO.reqstUpdateGenre request) {
 
@@ -133,6 +139,7 @@ public class GenreRest {
             path = "{id}/remove",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
+    @PreAuthorize("hasAnyAuthority('admin:delete', 'management:delete')")
     public RestResponse.object<String> remove(@PathVariable("id") Long id,
                                               DTO.reqstDetailGenre request) {
 
