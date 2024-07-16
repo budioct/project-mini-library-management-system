@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,6 +22,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/book")
+@PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
 public class BookRest {
 
     @Autowired
@@ -35,6 +37,7 @@ public class BookRest {
             path = "/fetch",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
+    @PreAuthorize("hasAnyAuthority('admin:read', 'management:read')")
     public RestResponse.list<List<DTO.respBook>> fetching(@RequestParam Map<String, Object> filter) {
 
         Page<DTO.respBook> respBooks = services.getBooks(filter);
@@ -62,6 +65,7 @@ public class BookRest {
             path = "/{id}/detail",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
+    @PreAuthorize("hasAnyAuthority('admin:read', 'management:read')")
     public RestResponse.object<DTO.respDetailBook> getDetail(@PathVariable("id") Long id,
                                                              DTO.reqstDetailBook request) {
 
@@ -85,6 +89,7 @@ public class BookRest {
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
+    @PreAuthorize("hasAnyAuthority('admin:create', 'management:create')")
     public ResponseEntity<RestResponse.object<DTO.respBook>> create(@RequestBody DTO.reqstCreateBook request) {
 
         DTO.respBook respBook = services.create(request);
@@ -109,6 +114,7 @@ public class BookRest {
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
+    @PreAuthorize("hasAnyAuthority('admin:update', 'management:update')")
     public RestResponse.object<DTO.respBook> create(@PathVariable("id") Long id,
                                                     @RequestBody DTO.reqstUpdateBook request) {
 
@@ -132,6 +138,7 @@ public class BookRest {
             path = "/{id}/remove",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
+    @PreAuthorize("hasAnyAuthority('admin:delete', 'management:delete')")
     public RestResponse.object<String> remove(@PathVariable("id") Long id,
                                               DTO.reqstDetailBook request) {
 
