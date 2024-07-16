@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,6 +22,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/member")
+@PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
 public class MemberRest {
 
     @Autowired
@@ -35,6 +37,7 @@ public class MemberRest {
             path = "/fetch",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
+    @PreAuthorize("hasAnyAuthority('admin:read', 'management:read')")
     public RestResponse.list<List<DTO.respMember>> fetching(@RequestParam Map<String, Object> filter) {
 
         Page<DTO.respMember> respMembers = services.fetchMembers(filter);
@@ -63,6 +66,7 @@ public class MemberRest {
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
+    @PreAuthorize("hasAnyAuthority('admin:create', 'management:create')")
     public ResponseEntity<RestResponse.object<DTO.respMember>> create(@RequestBody DTO.reqstMember request) {
 
         DTO.respMember respMember = services.create(request);
@@ -88,6 +92,7 @@ public class MemberRest {
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
+    @PreAuthorize("hasAnyAuthority('admin:update', 'management:update')")
     public RestResponse.object<DTO.respMember> update(@RequestBody DTO.reqstUpdateMember request,
                                                       @PathVariable Long id) {
 
@@ -111,6 +116,7 @@ public class MemberRest {
             path = "/{id}/detail",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
+    @PreAuthorize("hasAnyAuthority('admin:read', 'management:read')")
     public RestResponse.object<DTO.respMember> detail(@PathVariable("id") Long id,
                                                       DTO.reqstDetailMember request) {
 
@@ -134,6 +140,7 @@ public class MemberRest {
             path = "{id}/remove",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
+    @PreAuthorize("hasAnyAuthority('admin:delete', 'management:delete')")
     public RestResponse.object<String> remove(@PathVariable("id") Long id,
                                               DTO.reqstDetailMember request) {
 
