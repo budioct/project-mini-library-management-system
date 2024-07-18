@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  redis-example:
+    image: redis:7.2.5
+    container_name: redis-example
+    ports:
+      - "6379:6379"  # Port default Redis
+    volumes:
+      - spring_data_redis:/data
+
+volumes:
+  spring_data_redis:
+    driver: local
